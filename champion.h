@@ -1,18 +1,27 @@
 #ifndef CHAMPION //Header guard
 #define CHAMPION
+
 //enum creation for Champ roles
-enum ChampionRole{MAGE,FIGHTER,SUPPORT,TANK};
+typedef enum {MAGE,FIGHTER,SUPPORT,TANK} ChampionRole;
+
 
 //Champion
-struct Champion 
+struct Champion
 {
-    
+    ChampionRole role;
     int level;
     struct Champion* next; //node for linked list
-    Champion* createChampion();
-    Champion* addChampion(Champion *head, Champion *c);
-    Champion* buildChampionList(int n);
-    void printChampionList(Champion *head); 
+    
 };
+
+
+//function prototypes
+struct Champion* createChampion(); 
+
+struct Champion* addChampion(struct Champion *head,  struct Champion *c);
+
+struct Champion* buildChampionList(int n);
+
+void printChampionList(struct Champion *head);
 
 #endif
