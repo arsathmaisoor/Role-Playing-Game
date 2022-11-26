@@ -56,7 +56,7 @@ struct Champion* createChampion()
     }
     
     //return a pointer to the struct object
-    return (&struct1);
+    return (struct1);
 }  
 
 struct Champion* addChampion(struct Champion *head, struct Champion *c)
@@ -72,6 +72,7 @@ struct Champion* addChampion(struct Champion *head, struct Champion *c)
     
     c->next = temp->next;
     temp->next = c;
+    return head;
 }
 
 struct Champion* buildChampionList(int n)
@@ -83,13 +84,15 @@ struct Champion* buildChampionList(int n)
      
     if (head == NULL)
     {
+        c->next=NULL;
         head = c;
     } 
     else
     {
         addChampion(head,c);
     }
-    
+
+    return head;    
 }
 
 void printChampionList(struct Champion *head)
@@ -114,7 +117,7 @@ void printChampionList(struct Champion *head)
                 break;}
             default:{break;}
         }
-        printf(temp->level);
+        printf("%d",temp->level);
         printf("\t");
     }
 }
@@ -137,8 +140,9 @@ struct Champion* destroyChampion(struct Champion *head)
         else{
             current = temp;
             temp = temp->next;
-            delete current;
+            free (current);
         }
     }
+    return NULL;
 }
 
