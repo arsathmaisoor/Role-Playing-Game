@@ -1,148 +1,184 @@
+//champion.c
+//all the functions are implemented here
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 
 #include "champion.h" //importing the champion header-file
 
-struct Champion* createChampion()
+//function to create a champion node dynamically!
+Champion* createChampion()
 {
-    struct Champion* struct1 = NULL; //creating a pointer
+    //dynamically allocate new champion
+    Champion* struct1 = (Champion*) malloc(sizeof(Champion));
 
-    struct1 = (struct Champion*) malloc(sizeof(struct Champion)); //dynamically allocates new Champion struct
+    //successful memory allocation check
+    if(Champion==NULL) exit(EXIT_FAILURE);
 
-    srand(time(NULL));
-    int chRoleSelector = rand() % 4; //random role selection
+    //random number selection
+    int chRoleSelector = rand() % 4;
 
-    //ROLE assigning randomly
+    //Role and Level selection based on number
     switch (chRoleSelector)
     {
     case 0:{
-        struct1->role=M;
+        //25% chance of MAGE
+        struct1->role=MAGE;
+        //Level is between 5 and 8 inclusive
+        int upper = 8, lower = 5;
+        struct1->level=(rand()%(upper-lower+1))+lower;
         break;}
+
     case 1:{
-        struct1->role=F;
+        //25% chance of FIGHTER
+        struct1->role=FIGHTER;
+        //Level is between 1 and 4 inclusive
+        int upper = 4, lower = 1;
+        struct1->level=(rand()%(upper-lower+1))+lower;
         break;}
+
     case 2:{
-        struct1->role=S;
+        //25% chance of SUPPORT
+        struct1->role=SUPPORT;
+        //Level is between 3 and 6 inclusive
+        int upper = 6, lower = 3;
+        struct1->level=(rand()%(upper-lower+1))+lower;
         break;}
+
     case 3:{
-        struct1->role=T;
+        //25% chance of TANK
+        struct1->role=TANK;
+        //Level is between 1 and 8 inclusive
+        int upper = 1, lower = 8;
+        struct1->level=(rand()%(upper-lower+1))+lower;
         break;}
-    default:
-        {break;}
+    //no need for default case, as there is no chance for another random number than 0,1,2,3
     }
 
-    //level assigning according to the roles
-    switch(struct1->role)
-    {
-        case M:{
-            int upper = 8, lower = 5;
-            struct1->level=(rand()%(upper-lower+1))+lower;
-            break;}
-        case F:{
-            int upper = 4, lower = 1;
-            struct1->level=(rand()%(upper-lower+1))+lower;
-            break;}
-        case S:{
-            int upper = 6, lower = 3;
-            struct1->level=(rand()%(upper-lower+1))+lower;
-            break;}
-        case T:{
-            int upper = 1, lower = 8;
-            struct1->level=(rand()%(upper-lower+1))+lower;
-            break;}
-        default:
-            {break;}
-    }
+    //update the next link of champion 
+    struct1->next = NULL;
     
     //return a pointer to the struct object
-    return (struct1);
+    return struct1;
 }  
 
-struct Champion* addChampion(struct Champion *head, struct Champion *c)
+//function to add new champion in descending order of is value
+Champion* addChampion(Champion *head, Champion *c)
 {
-    struct Champion* temp;
-    c = createChampion();
-    temp = head;
-    
-    while (temp->next->level > c->level)
+    //check whether list is empty or not
+    //if empty, adding champion is first and head
+    if(head==NULL) return card;
+    if(c==NULL) return head;
+
+    //check whether the champion is to be added in the beginning
+    if(c->level > head->level)
     {
-        temp = temp->next;
+        //update the next of this champion
+        c->next = head;
+        //new head is c now
+        return c;
     }
-    
-    c->next = temp->next;
-    temp->next = c;
+
+    //find the place of this champion
+    Champion* prevChampion = NULL;
+    Champion* tempChampion = head;
+
+    while(tempChampion != NULL && tempChampion->level >= c->level)
+    {
+        prevChampion = tempChampion;
+        tempChampion = tempChampion->next;
+    }
+
+    //inserting the champion
+    c->next = tempChampion;
+    prevChampion->next = c;
+
+    //head will be same head
+    return head;   
+}
+
+//function to build a linked list of given number of champions
+Champion* buildChampionList(int n)
+{
+    //storing the head
+    Champion* head = NULL;
+
+    //create n number of champions
+    for(int count=0; count<n; count++)
+    {
+        //create a new champion
+        Champion* champion = createChampion();
+        //add the created champion to linked list
+        head = addChampion(head,champion);
+    }  
+    //returning the head
     return head;
 }
 
-struct Champion* buildChampionList(int n)
+//function to print the champions in the linked list
+void printChampionList(Champion *head)
 {
-    struct Champion* head = NULL;
-    //struct Champion* p;
-    struct Champion* c;
-    c = createChampion();
-     
-    if (head == NULL)
+    //print all champion
+    Champion* tempChampion = head;
+    while(tempChampion != NULL)
     {
-        c->next=NULL;
-        head = c;
-    } 
-    else
-    {
-        addChampion(head,c);
-    }
-
-    return head;    
-}
-
-void printChampionList(struct Champion *head)
-{
-    struct Champion* temp = head;
-    while (temp != NULL)
-    {
-        int roLe = temp->role;
-        switch(roLe)
-        {
-            case 0 :{
-                printf("M");
-                break;}
-            case 1 :{
-                printf("F");
-                break;}
-            case 2 :{
-                printf("S");
-                break;}
-            case 3 :{
-                printf("T");
-                break;}
-            default:{break;}
-        }
-        printf("%d",temp->level);
-        printf("\t");
+        //print the current champion
+        printChampion(tempChampion);
+        //go to next champion
+        tempChampion = tempChampion->next;
     }
 }
 
-struct Champion* removeChampion(struct Champion *head)
+//function to remove the first champion node
+Champion* removeChampion(Champion *head)
 {
-    struct Champion* temp;
-    temp = head;
-    head->next = head->next->next;
+    //check whether the head is NULL or not
+    if(head==NULL) return head;
+
+    //putting a new head node
+    Champion* newHead = head->next;
+
+    //head de-allocation
+    free(head);
+
+    //reurning the new head node
+    return newHead;
 }
 
-struct Champion* destroyChampion(struct Champion *head)
+//function to delete all nodes in the linked list
+Champion* destroyChampion(Champion *head)
 {
-    struct Champion* temp = head;
-    struct Champion* current;
-    while(temp != NULL)
+    //delete the champions again and again
+    do
     {
-        if(temp==NULL)
-        break;
-        else{
-            current = temp;
-            temp = temp->next;
-            free (current);
-        }
-    }
-    return NULL;
+        //delete the champion
+        head=removeChampion(head);
+    } while (head!=NULL);
+    //returning NULL for any instances
+    return NULL;   
 }
 
+//function to find the size of the linked list
+int getSize(Champion* head)
+{
+    int size = 0;
+    while(head != NULL)
+    {
+        size++;
+        head = head->next
+    }
+    return size;
+}
+
+//function to print the champion
+void printChampion(Champion* champion)
+{
+    if(champion!=NULL)
+    {
+        char type='M';
+        if(champion->role==FIGHTER) type='F';
+        else if(champion->role==SUPPORT) type='S';
+        else if(champion->role==TANK) type='T';
+        printf("%c%d",type,champion->level);
+    }
+}

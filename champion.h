@@ -2,30 +2,29 @@
 #define CHAMPION
 
 //enum creation for Champ roles
-typedef enum {M,F,S,T} ChampionRole;
+typedef enum ChampionRole{MAGE,FIGHTER,SUPPORT,TANK} ChampionRole;
 
 
 //Champion
-struct Champion
+typedef struct Champion
 {
     ChampionRole role;
     int level;
     struct Champion* next; //node for linked list
     
-};
+}Champion;
 
 
-//function prototypes
-struct Champion* createChampion(); 
+//function prototypes mentioned in the assignment
+Champion* createChampion(); 
+Champion* addChampion(Champion* head,Champion* c);
+Champion* buildChampionList(int n);
+void printChampionList(Champion *head);
+Champion* removeChampion(Champion *head);
+Champion* destroyChampion(Champion *head);
 
-struct Champion* addChampion(struct Champion *head,  struct Champion *c);
-
-struct Champion* buildChampionList(int n);
-
-void printChampionList(struct Champion *head);
-
-struct Champion* removeChampion(struct Champion *head);
-
-struct Champion* destroyChampion(struct Champion *head);
+//extra function prototypes
+int getSize(Champion* head);
+void printChampion(Champion* champion);
 
 #endif
