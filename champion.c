@@ -13,7 +13,7 @@ Champion* createChampion()
     Champion* struct1 = (Champion*) malloc(sizeof(Champion));
 
     //successful memory allocation check
-    if(Champion==NULL) exit(EXIT_FAILURE);
+    if(struct1==NULL) exit(EXIT_FAILURE);
 
     //random number selection
     int chRoleSelector = rand() % 4;
@@ -67,7 +67,7 @@ Champion* addChampion(Champion *head, Champion *c)
 {
     //check whether list is empty or not
     //if empty, adding champion is first and head
-    if(head==NULL) return card;
+    if(head==NULL) return c;
     if(c==NULL) return head;
 
     //check whether the champion is to be added in the beginning
@@ -165,7 +165,7 @@ int getSize(Champion* head)
     while(head != NULL)
     {
         size++;
-        head = head->next
+        head = head->next;
     }
     return size;
 }

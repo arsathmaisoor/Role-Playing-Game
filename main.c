@@ -41,7 +41,7 @@ bool isGameRunning(Champion* player1, Champion* player2)
     {
         //player1 is lost
         printEndingChampions(player1,player2);
-        printf("\nPlayer 1 ran out of champions. Player 2 wins.")
+        printf("\nPlayer 1 ran out of champions. Player 2 wins.");
         return false;
     }
     else if(size2==0)
@@ -88,11 +88,11 @@ int main(int argc, char const *argv[])
             while(true)
             {
                 //print the round number and other information
-                print("----- ROUND %d -----\n", ++round);
+                printf("----- ROUND %d -----\n", ++round);
                 printf("Player 1 : ");
                 printChampionList(player1);
                 printf("\n");
-                pritnf("Player 2 : ");
+                printf("Player 2 : ");
                 printChampionList(player2);
                 printf("\n");
                 printf("Player 1 is a ");
@@ -232,13 +232,13 @@ int main(int argc, char const *argv[])
                     if (level1>level2)
                     {
                         printf("Player 1 (FIGHTER) wins  with no reward.\nPlayer 2 (MAGE) loses one champion.\n");
-                        player1 = remove(player1);
+                        player1 = removeChampion(player1);
                     }
                     else if (level1<level2)
                     {
                         printf("Player 1 (FIGHTER) loses  with no penalty.\nPlayer 2 (MAGE) wins and gains one champion.\n");
                         Champion* champion = createChampion();
-                        player2 = addChampion(player2);
+                        player2 = addChampion(player2,champion);
                     }
                     else
                     {
@@ -329,7 +329,7 @@ int main(int argc, char const *argv[])
                 else
                 {
                     //TT fight
-                    printf("Nothing happens. No penalty or reward"\n);
+                    printf("Nothing happens. No penalty or reward\n");
                 }
                 //game finished check
                 if(!isGameRunning(player1,player2))
