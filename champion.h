@@ -2,7 +2,7 @@
 #define CHAMPION
 
 //enum creation for Champ roles
-typedef enum {MAGE,FIGHTER,SUPPORT,TANK} ChampionRole;
+typedef enum {M,F,S,T} ChampionRole;
 
 
 //Champion
@@ -23,5 +23,9 @@ struct Champion* addChampion(struct Champion *head,  struct Champion *c);
 struct Champion* buildChampionList(int n);
 
 void printChampionList(struct Champion *head);
+
+struct Champion* removeChampion(struct Champion *head);
+
+struct Champion* destroyChampion(struct Champion *head);
 
 #endif
